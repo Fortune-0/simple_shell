@@ -5,7 +5,7 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <stdbool.h>
-
+#include <stdlib.h>
 void start_info(void);
 void shell_print(const char *message);
 #endif /* SHELL_H */
