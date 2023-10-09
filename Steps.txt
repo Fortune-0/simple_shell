@@ -1,0 +1,4 @@
+1. create a shell.h file
+2. create a print function
+3. create an entry point
+4. create a  function to executes giving arguments
