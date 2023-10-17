@@ -2,7 +2,7 @@
 
 int main(void)
 {
-	char command[100];
+	char input[100];
 
 	while (1)
 	{
