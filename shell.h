@@ -6,6 +6,8 @@
 #include <unistd.h>
 #include <stdbool.h>
 #include <stdlib.h>
+#include <sys/types.h>
+#include <sys/wait.h>
 #include "error.h"
 void executes_commands(const char *input);
 void start_info(void);

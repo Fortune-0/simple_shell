@@ -24,13 +24,9 @@ void executes_commands(const char *input)
 		perror("execlp");
 		exit(EXIT_FAILURE);
 	}
-	else
 	{
-		/*
-		 * parent process
-		 */
-		wait(NULL);
-	}
+		wait (NULL);
+		
 /*
  * TOKENIZATION
  * tokenize the arguments
@@ -40,9 +36,9 @@ void executes_commands(const char *input)
  *
  */
 	}
-	
-
-	if (child_pid == -1)
+	{
+		pid_t child_pid = fork();
+		if (child_pid == -1)
 	{
 		shell_print("Error forking process.\n");
 		exit(EXIT_FAILURE);
@@ -81,4 +77,6 @@ void executes_commands(const char *input)
 	{
 		wait(NULL);
 	}
+	}
+}
 }
