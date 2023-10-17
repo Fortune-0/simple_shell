@@ -63,7 +63,7 @@ void executes_commands(const char *input)
 			args[arg_count++] = token;
 			token = strtok(NULL, " ");
 		}
-		args[arg_count] = NULL;
+	args[arg_count] = NULL;
 
 		/*
 		 * executes the 
