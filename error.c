@@ -1,4 +1,6 @@
 #include "error.h"
+#include "general.h"
+#include "text.h"
 
 /**
  * message_selector - Select the message that match with the error_code

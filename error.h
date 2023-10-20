@@ -1,13 +1,12 @@
-#ifndef _ERROR_H
-#define _ERROR_H
-/** 
- * handles all the errors
- */
+#ifndef ERROR_H
+#define ERROR_H
 
-#include "shell.h"
+#include "general.h"
+#include "text.h"
 
-char *message_selector(generalt info);
-void error(generalt *info);
-void error_extra(const char *info, char *extra);
+/* error.c */
+char *message_selector(general_t info);
+void error(general_t *info);
+void error_extra(general_t *info, char *extra);
 
 #endif /* ERROR_H */

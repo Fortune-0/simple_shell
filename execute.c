@@ -1,44 +1,69 @@
-#include "shell.h"
+#include "commands.h"
+#include "general.h"
+#include "memory.h"
 
 /**
- *Execute_command - Handle prompt commands
+ * execute - Execute a command in other process
  *
- *Return: 0
- */
-
-void execute_command(const char *command)
+ * @command: Command to execute
+ * @arguments: Arguments of the @command
+ * @info: General info about the shell
+ * @buff: Line readed
+ **/
+void execute(char *command, char **arguments, general_t *info, char *buff)
 {
-	pid_t c_pid = fork();
+	int status;
+	pid_t pid;
 
-    	if (c_pid == -1)
+	pid = fork();
+	if (pid == 0)
 	{
-		perror("fork");
-        	exit(EXIT_FAILURE);
-	}
-	else if (c_pid == 0)
-	{
-        /* In the child process */
-		int arg_count =0;
-		char *args[95];
-		char c_path[] = {"/bin/sh"};
+		execve(command, arguments, environ);
+		perror("./sh");
 
+		free_memory_pp((void *) arguments);
 
-		char *token = strtok((char *)command, " ");
-		while (token != NULL)
+		if (info->value_path != NULL)
 		{
-			args[arg_count++] = token;
-			token = strtok(NULL, " ");
+			free(info->value_path);
+			info->value_path = NULL;
 		}
-		args[arg_count] = NULL;
 
-	/*execute the command*/
-		execve(c_path, args, NULL);
-		perror("execve");
-            	exit(EXIT_FAILURE);
-    	} 
-	else 
+		free(info);
+		free(buff);
+		exit(1);
+	}
+	else if (pid > 0)
 	{
-        /* In the parent process */
-        	wait(NULL);
-    	}
+		waitpid(pid, &status, 0);
+		if (WIFEXITED(status))
+			info->status_code = WEXITSTATUS(status);
+	}
 }
+
+
+/**
+ * current_directory - Execute the command if the order require
+ *
+ * @cmd: Command to execute
+ * @arguments: Arguments of the @cmd
+ * @buff: Line readed
+ * @info: General info about the shell
+ *
+ * Return: Status of the operations
+ **/
+int current_directory(char *cmd, char **arguments, char *buff, general_t *info)
+{
+
+	if (info->is_current_path == _FALSE)
+		return (_FALSE);
+
+	if (is_executable(cmd) == PERMISSIONS)
+	{
+		execute(cmd, arguments, info, buff);
+		return (_TRUE);
+	}
+
+	return (_FALSE);
+}
+
